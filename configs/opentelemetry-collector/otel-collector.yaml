@@ -52,7 +52,7 @@ receivers:
         - job_name: 'colinas_api_dev'
           scrape_interval: 2s
           static_configs:
-            - targets: ['localhost:8081']
+            - targets: ['host.docker.internal:8081']
               labels:
                 service: 'colinas_api_dev'
 

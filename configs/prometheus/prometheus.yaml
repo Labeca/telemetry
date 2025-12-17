@@ -18,7 +18,7 @@ scrape_configs:
   - job_name: 'colinas_api_dev'
     metrics_path: /metrics
     static_configs:
-    - targets: ['localhost:8081']
+    - targets: ['host.docker.internal:8081']
 
   - job_name: 'volume_exporter'
     metrics_path: /metrics
