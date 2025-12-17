@@ -5,7 +5,7 @@ datasources:
     type: loki
     access: proxy
     uid: loki
-    url: http://localhost:3100
+    url: http://loki:3100
     jsonData:
       derivedFields:
         - datasourceUid: tempo
@@ -17,7 +17,7 @@ datasources:
     type: tempo
     access: proxy
     orgId: 1
-    url: http://localhost:3200
+    url: http://tempo:3200
     basicAuth: false
     isDefault: false
     version: 1
@@ -39,7 +39,7 @@ datasources:
     type: prometheus
     access: proxy
     uid: mimir
-    url: http://localhost:9009/prometheus
+    url: http://mimir:9009/prometheus
     jsonData:
       exemplarTraceIdDestinations:
         - datasourceUid: tempo
@@ -51,6 +51,6 @@ datasources:
     type: phlare
     access: proxy
     uid: pyroscope
-    url: http://localhost:4040
+    url: http://pyroscope:4040
     jsonData:
       backendType: pyroscope

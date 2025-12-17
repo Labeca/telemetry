@@ -1,7 +1,6 @@
 services:
   grafana:
     image: grafana/grafana:12.0.0
-    network_mode: host
     volumes:
       - ./configs/grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./configs/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
@@ -19,7 +18,6 @@ services:
 
   tempo:
     image: grafana/tempo:2.7.2
-    network_mode: host
     command: [ "-config.file=/etc/tempo.yaml" ]
     ports:
       - "3200:3200"
@@ -28,7 +26,6 @@ services:
 
   loki:
     image: grafana/loki:3.4.3
-    network_mode: host
     command: ["--pattern-ingester.enabled=true", "-config.file=/etc/loki/loki.yaml"]
     ports:
       - "3100:3100"
@@ -37,7 +34,6 @@ services:
 
   promtail:
     image: grafana/promtail:2.9.12
-    network_mode: host
     volumes:
       - ./configs/promtail/promtail-config.yaml:/etc/promtail/config.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock
@@ -47,7 +43,6 @@ services:
 
   mimir:
     image: grafana/mimir:2.16.0
-    network_mode: host
     command: ["-ingester.native-histograms-ingestion-enabled=true", "-config.file=/etc/mimir.yaml"]
     ports:
       - "9009:9009"
@@ -56,14 +51,12 @@ services:
 
   pyroscope:
     image: grafana/pyroscope:1.13.1
-    network_mode: host
     ports:
       - "4040:4040"
     command: ["server"]
 
   opentelemetry-collector:
     image: otel/opentelemetry-collector-contrib:0.126.0
-    network_mode: host
     command: [ "--config=/etc/otel-collector.yaml" ]
     volumes:
       - ./configs/opentelemetry-collector/otel-collector.yaml:/etc/otel-collector.yaml
