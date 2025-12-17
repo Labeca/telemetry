@@ -15,6 +15,8 @@ services:
       - loki
       - opentelemetry-collector
       - pyroscope
+    networks:
+      - containers_network
 
   tempo:
     image: grafana/tempo:2.7.2
@@ -23,6 +25,8 @@ services:
       - "3200:3200"
     volumes:
       - "./configs/tempo/tempo.yaml:/etc/tempo.yaml"
+    networks:
+      - containers_network
 
   loki:
     image: grafana/loki:3.4.3
@@ -31,12 +35,16 @@ services:
       - "3100:3100"
     volumes:
       - ./configs/loki/loki.yaml:/etc/loki/loki.yaml
+    networks:
+      - containers_network
 
   promtail:
     image: grafana/promtail:2.9.12
     volumes:
       - ./configs/promtail/promtail-config.yaml:/etc/promtail/config.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - containers_network      
     command: -config.file=/etc/promtail/config.yaml
     depends_on:
       - loki
@@ -48,12 +56,16 @@ services:
       - "9009:9009"
     volumes:
       - "./configs/mimir/mimir.yaml:/etc/mimir.yaml"
+    networks:
+      - containers_network      
 
   pyroscope:
     image: grafana/pyroscope:1.13.1
     ports:
       - "4040:4040"
     command: ["server"]
+    networks:
+      - containers_network    
 
   opentelemetry-collector:
     image: otel/opentelemetry-collector-contrib:0.126.0
@@ -68,6 +80,12 @@ services:
       - "4317:4317"   # OTLP gRPC receiver
       - "4318:4318"   # OTLP HTTP receiver
       - "55679:55679" # zpages extension
+    networks:
+      - containers_network      
     depends_on:
       - tempo
       - mimir
+networks:
+  containers_network:
+    external: true
+    name: containers-network
